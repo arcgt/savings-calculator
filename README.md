@@ -1,4 +1,4 @@
-# Savings Calculator
+# Savings Calculator (WIP)
 A savings calculator project, featuring:
 - Savings projection based on amounts in saving accounts and expected costs
 - Self employed tax calculator, with exportable PDF
@@ -21,3 +21,7 @@ Start the React app by running the following command:
 ```
 npm run dev
 ```
+
+## TODO
+1. Page logic
+2. Page UI
