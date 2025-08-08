@@ -1,6 +1,6 @@
 import React from "react";
 
-const AccountComparisonsPage: React.FC = () => {
+const SavingsCalculator: React.FC = () => {
   React.useEffect(() => {
     document.documentElement.scrollTo({top: 0, behavior: "instant"});
   }, []);
@@ -8,10 +8,10 @@ const AccountComparisonsPage: React.FC = () => {
   return (
     <section className='flex flex-col mt-20 w-screen justify-start text-black p-20'>
       <div>
-        Savings Account Comparisons Page (WIP)
+        Savings Calculator (WIP)
       </div>
     </section>
   )
 }
 
-export default AccountComparisonsPage
+export default SavingsCalculator
