@@ -1,49 +1,40 @@
 import React from "react";
+import TextInput from "../../components/TextInput";
 
 const TaxCalculatorPage: React.FC = () => {
-  // --------------------------------------------------------------
-  // --------------------------- INCOME ---------------------------
-  // --------------------------------------------------------------
+  // Defaults tax brackets from UK GOV 2025/26
+  const personalAllowance: number = 12570;
+  const firstBracketThreshold: number = 50270;
+  const firstBracketRate: number = 0.2;
+  const secondBracketThreshold: number = 125140;
+  const secondBracketRate: number = 0.4;
+  const thirdBracketRate: number = 0.45;
+
+
+  // Total income and business expenses within the tax year
   const [totalIncome, setTotalIncome] = React.useState<number>(0);
+  const [totalExpenses, setTotalExpenses] = React.useState<number>(0);
 
-  // --------------------------------------------------------------
-  // -------------------------- BRACKETS --------------------------
-  // --------------------------------------------------------------
+  // TODO: dropdown to help with calculation of specific expenses
+  // // Calculation of rent allowance for self employed who work at home
+  // const [hoursWorked, setHoursWorked] = React.useState<number>(0);
+  // const [totalRentCost, setTotalRentCost] = React.useState<number>(0);
+  // const rentAllowance = totalRentCost * (hoursWorked / (24*365)); // TODO: is percentage of house? 
 
-  // Defaults based on UK Gov tax brackets 2025/26
-  const [personalAllowance, setPersonalAllowance] = React.useState<number>(12570);
-  const [firstBracketThreshold, setFirstBracketThreshold] = React.useState<number>(50270);
-  const [firstBracketRate, setFirstBracketRate] = React.useState<number>(0.2);
-  const [secondBracketThreshold, setSecondBracketThreshold] = React.useState<number>(125140);
-  const [secondBracketRate, setSecondBracketRate] = React.useState<number>(0.4);
-  const [thirdBracketRate, setThirdBracketRate] = React.useState<number>(0.45);
-
-  // --------------------------------------------------------------
-  // ------------------------- ALLOWANCES -------------------------
-  // --------------------------------------------------------------
-
-  // Calculation of rent allowance for self employed who work at home
-  const [hoursWorked, setHoursWorked] = React.useState<number>(0);
-  const [totalRentCost, setTotalRentCost] = React.useState<number>(0);
-  const rentAllowance = totalRentCost * (hoursWorked / (24*365)); // TODO: is percentage of house? 
-
-  // Calculation of equipment allowance for self employed who bought equipment for work
-  const [equipmentAllowance, setEquipmentAllowance] = React.useState<number>(0); // TODO: convert to list
+  // // Calculation of equipment allowance for self employed who bought equipment for work
+  // const [equipmentAllowance, setEquipmentAllowance] = React.useState<number>(0); // TODO: convert to list
 
   // // TODO: ["your first £1,000 of income from self-employment - this is your ‘trading allowance’"]
   // const [tradingAllowance, setTradingAllowance] = React.useState<number>(1000);
 
-  // --------------------------------------------------------------
-  // ----------------------- TAXABLE AMOUNT -----------------------
-  // --------------------------------------------------------------
-
   // The amount of income that is taxable
-  var taxableAmount = totalIncome - rentAllowance - equipmentAllowance;
+  var taxableAmount = totalIncome - totalExpenses;
 
-  // Personal allowance is fixed based on UK Gov for the year 2025/26
+  // // TODO: Whether to pay optional Class 2 NIC for income <= £6725
+  // const [showOptionalClassTwoNic, setShowOptionalClassTwoNic] = React.useState<boolean>(false);
   const [optionalClassTwoNic, setOptionalClassTwoNic] = React.useState<boolean>(false);
 
-  // Get the total tax due, based on UK Gov tax brackets 2025/26
+  // Get the total tax due, based on UK GOV tax brackets 2025/26
   const _getTaxDue = () => {
     if (taxableAmount <= personalAllowance) {
       return 0;
@@ -56,7 +47,7 @@ const TaxCalculatorPage: React.FC = () => {
     }
   }
 
-  // NIC contributions, including Class 4 NIC and Class 2 NIC
+  // NIC contributions due, including Class 4 NIC and Class 2 NIC
   const _getNicDue = () => {
     if (taxableAmount <= 6725) {
       if (optionalClassTwoNic) {
@@ -85,72 +76,58 @@ const TaxCalculatorPage: React.FC = () => {
   }, []);
   
   return (
-    <section className='flex flex-col mt-20 w-screen justify-start items-start text-black p-20'>
-      <div className="flex flex-row w-full text-4xl pb-10">
-        Self-employed tax calculator
-      </div>
-      <div className="flex flex-row w-full justify-start">
-        <div className="flex flex-1">
-          Total income:
+    <section className='flex flex-col mt-20 w-[800px] justify-start items-start text-black p-20'>
+      <div className="flex flex-col gap-4 w-full">
+        <div className="flex flex-row w-full text-4xl pb-10">
+          Self-employed tax calculator 24/25
         </div>
-        <div className="flex flex-1">
-          xxx
+        <div className="flex flex-row w-full justify-start">
+          <div className="flex flex-1">
+            Total income:
+          </div>
+          <div className="flex flex-1">
+            <TextInput inputValue={totalIncome} setInputValue={setTotalIncome}/>
+          </div>
         </div>
-      </div>
-      <div className="flex flex-row w-full justify-start">
-        <div className="flex flex-1">
-          Hours worked:
+        <div className="flex flex-row w-full justify-start items-center">
+          <div className="flex flex-1">
+            Total business expenses:
+          </div>
+          <div className="flex flex-1">
+            <TextInput inputValue={totalExpenses} setInputValue={setTotalExpenses}/>
+          </div>
         </div>
-        <div className="flex flex-1">
-          xxx
+        <div className="flex flex-row w-full justify-start">
+          <div className="flex flex-1">
+            Taxable amount:
+          </div>
+          <div className="flex flex-1">
+            £{taxableAmount}
+          </div>
         </div>
-      </div>
-      <div className="flex flex-row w-full justify-start">
-        <div className="flex flex-1">
-          Rent paid:
+        <div className="flex flex-row w-full justify-start">
+          <div className="flex flex-1">
+            Tax due:
+          </div>
+          <div className="flex flex-1">
+            £{_getTaxDue()}
+          </div>
         </div>
-        <div className="flex flex-1">
-          xxx
+        <div className="flex flex-row w-full justify-start">
+          <div className="flex flex-1">
+            NIC due:
+          </div>
+          <div className="flex flex-1">
+            £{_getNicDue()}
+          </div>
         </div>
-      </div>
-      <div className="flex flex-row w-full justify-start">
-        <div className="flex flex-1">
-          Equipment cost:
-        </div>
-        <div className="flex flex-1">
-          xxx
-        </div>
-      </div>
-      <div className="flex flex-row w-full justify-start">
-        <div className="flex flex-1">
-          Taxable amount:
-        </div>
-        <div className="flex flex-1">
-          {taxableAmount}
-        </div>
-      </div>
-      <div className="flex flex-row w-full justify-start">
-        <div className="flex flex-1">
-          Tax due:
-        </div>
-        <div className="flex flex-1">
-          {_getTaxDue()}
-        </div>
-      </div>
-      <div className="flex flex-row w-full justify-start">
-        <div className="flex flex-1">
-          NIC due:
-        </div>
-        <div className="flex flex-1">
-          {_getNicDue()}
-        </div>
-      </div>
-      <div className="flex flex-row w-full justify-start">
-        <div className="flex flex-1">
-          Total due:
-        </div>
-        <div className="flex flex-1">
-          {_getTaxDue() + _getNicDue()}
+        <div className="flex flex-row w-full justify-start">
+          <div className="flex flex-1">
+            Total due:
+          </div>
+          <div className="flex flex-1">
+            £{_getTaxDue() + _getNicDue()}
+          </div>
         </div>
       </div>
     </section>
