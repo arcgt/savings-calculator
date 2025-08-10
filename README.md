@@ -23,5 +23,11 @@ npm run dev
 ```
 
 ## TODO
-1. Page logic
-2. Page UI
+Tax calculator
+- Show / hide more info for each section
+- Optional NIC 2 contribution toggle for income less than £6725
+- Add ability to enter formulas
+- Ability to manually adjust tax bracket values / select year
+- Export to PDF option
+
+Savings page (WIP)

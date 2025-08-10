@@ -28,7 +28,7 @@ const TaxCalculatorPage: React.FC = () => {
   // const [tradingAllowance, setTradingAllowance] = React.useState<number>(1000);
 
   // The amount of income that is taxable
-  var taxableAmount = totalIncome - totalExpenses;
+  var taxableAmount: number = totalIncome - totalExpenses;
 
   // // TODO: Whether to pay optional Class 2 NIC for income <= £6725
   // const [showOptionalClassTwoNic, setShowOptionalClassTwoNic] = React.useState<boolean>(false);
@@ -76,7 +76,7 @@ const TaxCalculatorPage: React.FC = () => {
   }, []);
   
   return (
-    <section className='flex flex-col mt-20 w-[800px] justify-start items-start text-black p-20'>
+    <section className='flex flex-col mt-20 w-screen justify-start items-start text-black p-20'>
       <div className="flex flex-col gap-4 w-full">
         <div className="flex flex-row w-full text-4xl pb-10">
           Self-employed tax calculator 24/25
@@ -88,6 +88,12 @@ const TaxCalculatorPage: React.FC = () => {
           <div className="flex flex-1">
             <TextInput inputValue={totalIncome} setInputValue={setTotalIncome}/>
           </div>
+          <div className="flex flex-2">
+            <input 
+              className="w-full placeholder:text-gray-400 text-black px-2 py-0.5 rounded-md outline-1 outline-gray-300 focus:outline-sky-300"
+              placeholder="Enter additional notes or income breakdown"
+            />
+          </div>
         </div>
         <div className="flex flex-row w-full justify-start items-center">
           <div className="flex flex-1">
@@ -96,12 +102,18 @@ const TaxCalculatorPage: React.FC = () => {
           <div className="flex flex-1">
             <TextInput inputValue={totalExpenses} setInputValue={setTotalExpenses}/>
           </div>
+          <div className="flex flex-2">
+            <input 
+              className="w-full placeholder:text-gray-400 text-black px-2 py-0.5 rounded-md outline-1 outline-gray-300 focus:outline-sky-300"
+              placeholder="Enter additional notes or expense breakdown"
+            />
+          </div>
         </div>
         <div className="flex flex-row w-full justify-start">
           <div className="flex flex-1">
             Taxable amount:
           </div>
-          <div className="flex flex-1">
+          <div className="flex flex-3">
             £{taxableAmount}
           </div>
         </div>
@@ -109,24 +121,24 @@ const TaxCalculatorPage: React.FC = () => {
           <div className="flex flex-1">
             Tax due:
           </div>
-          <div className="flex flex-1">
-            £{_getTaxDue()}
+          <div className="flex flex-3">
+            £{Math.round(_getTaxDue() * 100) / 100}
           </div>
         </div>
         <div className="flex flex-row w-full justify-start">
           <div className="flex flex-1">
             NIC due:
           </div>
-          <div className="flex flex-1">
-            £{_getNicDue()}
+          <div className="flex flex-3">
+            £{Math.round(_getNicDue() * 100) / 100}
           </div>
         </div>
         <div className="flex flex-row w-full justify-start">
           <div className="flex flex-1">
             Total due:
           </div>
-          <div className="flex flex-1">
-            £{_getTaxDue() + _getNicDue()}
+          <div className="flex flex-3">
+            £{Math.round((_getTaxDue() + _getNicDue()) * 100) / 100}
           </div>
         </div>
       </div>
